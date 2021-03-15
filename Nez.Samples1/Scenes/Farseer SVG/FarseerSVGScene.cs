@@ -113,6 +113,27 @@ namespace Nez.Samples
 			}
 		}
 
+
+		/// <summary>
+		/// adds static chain physics objects for each path in the SVG
+		/// </summary>
+		/// <param name="group">Group.</param>
+		void AddPaths(SvgGroup group)
+		{
+			var svgPathBuilder = new SvgPathBuilder();
+
+			foreach (var path in group.Paths)
+			{
+				var pts = path.GetTransformedDrawingPoints(svgPathBuilder);
+
+				CreateEntity(path.Id)
+					.AddComponent<FSRigidBody>()
+					.AddComponent(new FSCollisionChain())
+					.SetVertices(pts);
+			}
+		}
+
+
 		/// <summary>
 		/// adds dynamic ellipse physics objects for each ellipse in the SVG
 		/// </summary>
